@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta http-equiv="Content-type" content="text/html;charset=UTF-8" />
+    <link rel="stylesheet" href="style-formula.css" />
+
+</head>
+    <div class="form-style">
+        <h1>Sign Up Now! Sign up and tell us what you think of the site!</h1>
+        <form>
+            <div class="section">Name</div>
+            <div class="section-content">
+                <label>Your Full Name </label>
+                <input type="text" name="fname" id="fname" onblur="checkName()" title='name not empty at least 5 caracters ' />
+                <span class="tooltip">you must fill this field correctly</span>
+
+            </div>
+
+            <div class="section">Email and Phone</div>
+            <div class="section-content">
+                <label>Email Address </label>
+                <input type="email" name="femail" id="femail" onblur="checkEmail()" title='title='email should be *****@something.**''/>
+                <span class="tooltip">Enter a valid Email .ex: *****@something.**</span>
+
+                <label>Phone Number</label>
+                <input type="tel" name="fphone" id="fphone" onblur="checkPhone()" title='phone number' />
+                <span class="tooltip">enter a valid phone number</span>
+            </div>
+
+
+            <div class="section">Passwords</div>
+            <div class="section-content">
+                <label>Password</label>
+                <input type="password" name="fpwd" id="fpwd" />
+                <div id="message">
+                
+                    <h3>Password must contain the following:</h3>
+                    <p id="letter" class="invalid">A
+                        <b>lowercase</b> letter</p>
+                    <p id="capital" class="invalid">A
+                        <b>capital (uppercase)</b> letter</p>
+                    <p id="number" class="invalid">A
+                        <b>number</b>
+                    </p>
+                    <p id="length" class="invalid">Minimum
+                        <b>8 characters</b>
+                    </p>
+                </div>
+
+
+                <label>Confirm Password</label>
+                <input type="password" name="fpwd2" id="fpwd2" onblur="checkConfirmation()" />
+                <span class="tooltip"> The confirmation password must be identical to the original one</span>
+            </div>
+            <div class="button-section">
+                <input type="submit" name="fsign" value="Send" onclick="validate_all()"/>
+                <input type="reset" name="freset" value="Reset" />
+            </div>
+        </form>
+    </div>
+    <script>
+
+
+
+        function deactivateTooltips() {
+
+            let tooltips = document.querySelectorAll('.tooltip'),
+                tooltipsLength = tooltips.length;
+
+            for (let i = 0; i < tooltipsLength; i++) {
+                tooltips[i].style.display = 'none';
+            }
+
+        }
+
+
+
+        function getTooltip(element) {
+
+            while (element = element.nextSibling) {
+                if (element.className === 'tooltip') {
+                    return element;
+                }
+            }
+
+            return false;
+
+        }
+
+
+
+
+        function checkName() {
+
+
+            let name = document.querySelector('#fname'),
+                tooltipStyle = getTooltip(name).style;
+
+            if (name.value.length >= 5 && name.value != "" && isNaN(parseInt(name.value))) {
+                name.className = 'correct';
+                tooltipStyle.display = 'none';
+                return true;
+            } else {
+                name.className = 'incorrect';
+                tooltipStyle.display = 'inline-block';
+                return false;
+            }
+
+
+        }
+        function checkEmail() {
+            let pattern = /^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$/;
+            let email = document.querySelector('#femail'),
+                tooltipStyle = getTooltip(email).style;
+
+            if (pattern.test(email.value)&&email.value!="") {
+                email.className = 'correct';
+                tooltipStyle.display = 'none';
+                return true;
+            } else {
+                email.className = 'incorrect';
+                tooltipStyle.display = 'inline-block';
+                return false;
+            }
+
+        }
+
+        function checkPhone() {
+
+            let fphone = document.querySelector('#fphone')
+            let tooltipStyle = getTooltip(fphone).style;
+
+            if (isNaN(parseInt(fphone.value))==false && fphone.value!="") {
+                fphone.className = 'correct';
+                tooltipStyle.display = 'none';
+                return true;
+            } else {
+                fphone.className = 'incorrect';
+                tooltipStyle.display = 'block';
+                return false;
+            }
+
+        }
+        let myInput = document.getElementById("fpwd");
+        let letter = document.getElementById("letter");
+        let capital = document.getElementById("capital");
+        let number = document.getElementById("number");
+        let length = document.getElementById("length");
+
+       
+        myInput.onfocus = function () {
+            document.getElementById("message").style.display = "block";
+        }
+
+     
+        myInput.onblur = function () {
+            document.getElementById("message").style.display = "none";
+        }
+
+        
+        myInput.onkeyup = function () {
+            
+            let lowerCaseLetters = /[a-z]/g;
+            if (myInput.value.match(lowerCaseLetters)) {
+                letter.classList.remove("invalid");
+                letter.classList.add("valid");
+            } else {
+                letter.classList.remove("valid");
+                letter.classList.add("invalid");
+            }
+
+           
+            let upperCaseLetters = /[A-Z]/g;
+            if (myInput.value.match(upperCaseLetters)) {
+                capital.classList.remove("invalid");
+                capital.classList.add("valid");
+            } else {
+                capital.classList.remove("valid");
+                capital.classList.add("invalid");
+            }
+
+            
+            let numbers = /[0-9]/g;
+            if (myInput.value.match(numbers)) {
+                number.classList.remove("invalid");
+                number.classList.add("valid");
+            } else {
+                number.classList.remove("valid");
+                number.classList.add("invalid");
+            }
+
+            
+            if (myInput.value.length >= 8) {
+                length.classList.remove("invalid");
+                length.classList.add("valid");
+            } else {
+                length.classList.remove("valid");
+                length.classList.add("invalid");
+            }
+        }
+
+      
+
+
+        function checkConfirmation() {
+
+            let fpwd = document.querySelector('#fpwd');
+            let fpwd2 = document.querySelector('#fpwd2')
+            let tooltipStyle = getTooltip(fpwd2).style;
+
+            if (fpwd.value == fpwd2.value && fpwd2.value != '') {
+                fpwd2.className = 'correct';
+                tooltipStyle.display = 'none';
+                return true;
+            } else {
+                fpwd2.className = 'incorrect';
+                tooltipStyle.display = 'block';
+                return false;
+            }
+
+        }
+        deactivateTooltips();
+
+    function validate_all(){
+        if(checkName()&&checkConfirmation()&&checkEmail()&&checkPhone)
+        alert("succussfuly sumbited ")
+        else
+        alert("you have invalid inputs!")
+    }
+
+
+    </script>
+    </body>
+
+</html>
